@@ -55,13 +55,19 @@ function App() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      // Send the fighter data to the backend
       const response = await fetch('http://127.0.0.1:5000/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fighter1, fighter2 }),
+        body: JSON.stringify({ fighter1, fighter2 }), // Send fighter1 and fighter2 data
       });
+
+      // Parse the response
       const data = await response.json();
-      setPrediction(data.prediction); // Update prediction state with the result
+
+      // Map the prediction to a meaningful message
+      const winnerMessage = data.prediction === 1 ? "Fighter 1 will win!" : "Fighter 2 will win!";
+      setPrediction(winnerMessage); // Update the prediction state with the result
     } catch (error) {
       console.error('Error:', error);
     }
